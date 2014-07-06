@@ -34,6 +34,12 @@ describe("Product", function () {
                 .expect(404, done);
         });
 
+        it('all products', function (done) {
+            request(app)
+                .get('/products')
+                .expect(200, done);
+        })
+
         afterEach(function (done) {
             mockgoose.reset();
             done();
