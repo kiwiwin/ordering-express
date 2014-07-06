@@ -22,6 +22,7 @@ describe("Product", function () {
             .end(function(err, res) {
                 expect(res.body.name).toBe('apple juice')
                 expect(res.body.description).toBe('good')
+                expect(res.body.uri).toContain("/products/" + product.id)
                 done();
             });
     });
