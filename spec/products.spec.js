@@ -52,4 +52,22 @@ describe("Product", function () {
             done();
         });
     });
+
+    describe('POST', function() {
+        beforeEach(function (done) {
+            mockgoose.reset();
+            done();
+        });
+
+        it('create new product', function (done) {
+            request(app)
+                .post('/products')
+                .expect(201, done);
+        });
+
+        afterEach(function (done) {
+            mockgoose.reset();
+            done();
+        });
+    })
 });
