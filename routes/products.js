@@ -5,10 +5,13 @@ var Product = require('../models/product');
 
 var mapProductToResponse = function (product) {
 	return {id: product.id, name: product.name, description: product.description,
-				uri: '/products/' + product.id }
+			price: product.price, uri: '/products/' + product.id }
 }
 
 router.post('/', function (req, res) {
+	var product = new Product({name: req.param('name'), description: req.param('description'), price: req.param('price')})
+	product.save();
+	res.header('location', '/products/' + product.id)
 	res.send(201)
 })
 

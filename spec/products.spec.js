@@ -20,9 +20,10 @@ describe("Product", function () {
             request(app)
                 .get('/products/' + product.id)
                 .expect(200)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     expect(res.body.name).toBe('apple juice')
                     expect(res.body.description).toBe('good')
+                    expect(res.body.price).toBe(10.12)
                     expect(res.body.uri).toContain("/products/" + product.id)
                     done();
                 });
@@ -38,7 +39,7 @@ describe("Product", function () {
             request(app)
                 .get('/products')
                 .expect(200)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     expect(res.body.length).toBe(1)
                     var responseProduct = res.body[0]
                     expect(responseProduct.name).toBe('apple juice')
@@ -54,15 +55,31 @@ describe("Product", function () {
     });
 
     describe('POST', function() {
+        var location;
+
         beforeEach(function (done) {
             mockgoose.reset();
-            done();
+
+            request(app)
+            .post('/products')
+            .send({name: 'new juice', description: 'new taste', price: 3.45})
+            .expect(201)
+            .end(function (err, res) {
+                location = res.header.location
+                done();
+            });
         });
 
         it('create new product', function (done) {
             request(app)
-                .post('/products')
-                .expect(201, done);
+            .get(location)
+            .expect(200)
+            .end(function (err, res) {
+                expect(res.body.name).toBe('new juice')
+                expect(res.body.description).toBe('new taste')
+
+                done();
+            })
         });
 
         afterEach(function (done) {
