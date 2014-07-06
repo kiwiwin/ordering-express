@@ -1,7 +1,8 @@
 var express = require('express');
 var _ = require('underscore')
 var router = express.Router();
-var Product = require('../models/product');
+var mongoose = require("mongoose");
+var Product = mongoose.model('Product');
 
 var mapProductToResponse = function (product) {
 	return {id: product.id, name: product.name, description: product.description,
