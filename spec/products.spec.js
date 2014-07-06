@@ -21,6 +21,12 @@ describe("Product", function () {
             .expect(200, done);
     });
 
+    it('http status 404', function (done) {
+        request(app)
+            .get('/products/not_exist_product_id')
+            .expect(404, done);
+    })
+
     afterEach(function (done) {
         mockgoose.reset();
         done();
