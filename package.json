@@ -19,7 +19,6 @@
     "gulp": "^3.8.5",
     "gulp-jasmine": "^0.2.0",
     "mockgoose": "^1.10.0",
-    "superagent": "^0.18.1",
     "supertest": "^0.13.0"
   }
 }
