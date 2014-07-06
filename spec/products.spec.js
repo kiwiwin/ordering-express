@@ -40,6 +40,9 @@ describe("Product", function () {
                 .expect(200)
                 .end(function(err, res) {
                     expect(res.body.length).toBe(1)
+                    var responseProduct = res.body[0]
+                    expect(responseProduct.name).toBe('apple juice')
+                    expect(responseProduct.description).toBe('good')
                     done();
                 });
         })
