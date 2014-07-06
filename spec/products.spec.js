@@ -37,7 +37,11 @@ describe("Product", function () {
         it('all products', function (done) {
             request(app)
                 .get('/products')
-                .expect(200, done);
+                .expect(200)
+                .end(function(err, res) {
+                    expect(res.body.length).toBe(1)
+                    done();
+                });
         })
 
         afterEach(function (done) {
