@@ -11,21 +11,26 @@ describe("Product", function () {
 
     beforeEach(function (done) {
         mockgoose.reset();
-        product = new Product({name: 'name', description: 'description', price: 10.12});
+        product = new Product({name: 'apple juice', description: 'good', price: 10.12});
         product.save(done);
     });
 
     it('http status 200', function (done) {
         request(app)
             .get('/products/' + product.id)
-            .expect(200, done);
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.body.name).toBe('apple juice')
+                expect(res.body.description).toBe('good')
+                done();
+            });
     });
 
     it('http status 404', function (done) {
         request(app)
             .get('/products/not_exist_product_id')
             .expect(404, done);
-    })
+    });
 
     afterEach(function (done) {
         mockgoose.reset();

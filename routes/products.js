@@ -7,7 +7,8 @@ router.get('/:id', function (req, res) {
 		if (err || product == null) {
 			return res.send(404)
 		}
-		return res.send(200)
+		console.log(product)
+		return res.send(200, product)
 	});
 });
 
