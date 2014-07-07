@@ -45,7 +45,7 @@ describe('Order', function() {
 				.expect(200)
 				.end(function (err, res) {
 					expect(res.body.type).toBe('cash')
-
+					expect(res.body.uri).toContain('/users/' + user.id + '/orders/' + order.id + "/payment")
 					done();
 				});
 		});
