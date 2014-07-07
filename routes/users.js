@@ -43,6 +43,19 @@ router.get('/:userId/orders/:orderId/payment', function (req, res) {
 				});
 });
 
+router.post('/:userId/orders/:orderId/payment', function (req, res) {
+	var payment = {type: req.param('type'), timestamp: req.param('timestamp')}
+
+	return Order.findOne({_id: req.params.orderId, user: req.params.userId})
+				.exec(function (err, order) {
+					order.pay(payment);
+
+					res.header('location', "/users/" + order.user + "/orders/" + order.id + "/payment")
+					return res.send(201);
+				})
+});
+
+
 router.get('/:userId/orders', function (req, res) {
 	return Order.find({user: req.params.userId})
 				.populate('product')

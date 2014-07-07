@@ -56,4 +56,46 @@ describe('Order', function() {
 				.expect(404, done);
 		})
 	});
+
+	describe('Post', function() {
+		var location;
+
+		beforeEach(function (done) {
+	        mockgoose.reset();
+	        product = new Product({name: 'apple juice', description: 'good', price: 10.12});
+	        product.save();
+
+	        order = new Order({product: product._id});
+	        order.save();
+
+			user = new User({name: "kiwi"})
+			user.save();
+			user.placeOrder(order, done);
+
+			request(app)
+				.post("/users/" + user.id + "/orders/" + order.id + "/payment")
+				.send({type: 'cash', timestamp: new Date(2014,1,1)})
+				.expect(201)
+				.end(function (err, res) {
+                	location = res.header.location
+                	done();
+				})
+		});
+
+		afterEach(function (done) {
+			mockgoose.reset();
+			done();
+		});
+
+		it('create new payment', function (done) {
+			request(app)
+				.get(location)
+				.expect(200)
+				.end(function (err, res) {
+					expect(res.body.type).toBe('cash')
+
+					done();
+				});
+		});
+	});
 })
