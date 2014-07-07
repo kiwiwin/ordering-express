@@ -55,7 +55,12 @@ describe('Order', function() {
 		it('all orders of a user', function (done) {
 			request(app)
 				.get("/users/" + user.id + "/orders")
-				.expect(200, done)
-		})
+				.expect(200)
+				.end(function (err, res) {
+					expect(res.body.length).toBe(1);
+
+					done();
+				});
+		});
 	})
 })

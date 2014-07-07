@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
+var _ = require('underscore');
 
 var User = mongoose.model('User');
 var Order = mongoose.model('Order');
@@ -28,7 +29,14 @@ router.get('/:userId/orders/:orderId', function (req, res) {
 });
 
 router.get('/:userId/orders', function (req, res) {
-	res.send(200)
+	return Order.find({user: req.params.userId})
+				.populate('product')
+				.populate('user')
+				.exec(function (err, orders) {
+					return res.send(200, _.map(orders, function (order) {
+								return mapOrderToResponse(order);
+							}));
+				});
 });
 
 module.exports = router;
