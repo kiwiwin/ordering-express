@@ -21,14 +21,14 @@ router.post('/', function (req, res) {
 
 router.get('/', function (req, res) {
 	return Product.find({}, function(err, products) {
-		return res.send(200, _.map(products, function(product) {
+		return res.send(200, _.map(products, function (product) {
 			return mapProductToResponse(product)
 		}));
 	});
 })
 
 router.get('/:id', function (req, res) {
-	return Product.findById(req.params.id, function(err, product) {
+	return Product.findById(req.params.id, function (err, product) {
 		if (err || product == null) {
 			return res.send(404)
 		}
