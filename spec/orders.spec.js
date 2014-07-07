@@ -19,14 +19,10 @@ describe('Order', function() {
 	        product = new Product({name: 'apple juice', description: 'good', price: 10.12});
 	        product.save();
 
-	        order = new Order({
-	        	product: product._id
-	        })
+	        order = new Order({product: product._id});
 	        order.save();
 
-	        order2 = new Order({
-	        	product: product._id
-	        })
+	        order2 = new Order({product: product._id});
 	        order2.save();
 
 			user = new User({name: "kiwi"})
@@ -75,6 +71,35 @@ describe('Order', function() {
 	});
 
 	describe('Post', function () {
+		var location;
 
+		beforeEach(function (done) {
+	        mockgoose.reset();
+	        product = new Product({name: 'apple juice', description: 'good', price: 10.12});
+	        product.save();
+
+			user = new User({name: "kiwi"})
+			user.save();
+			
+			request(app)
+				.post("/users/" + user.id + "/orders")
+				.send({product_id: product.id})
+				.expect(201)
+				.end(function (err, res) {
+                	location = res.header.location
+                	done();
+            	});
+		});		
+
+		it('create order', function (done) {
+			request(app)
+				.get(location)
+				.expect(201)
+				.end(function (err, res) {
+					expect(res.body.price).toBe(10.12);
+
+					done();
+				});
+		})
 	})
 })
