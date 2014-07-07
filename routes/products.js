@@ -4,15 +4,18 @@ var router = express.Router();
 var mongoose = require("mongoose");
 var Product = mongoose.model('Product');
 
+var productUri = function (product) {
+	return '/products/' + product.id
+}
+
 var mapProductToResponse = function (product) {
-	return {id: product.id, name: product.name, description: product.description,
-			price: product.price, uri: '/products/' + product.id }
+	return _.extend(product.toObject(), {uri: productUri(product)})
 }
 
 router.post('/', function (req, res) {
 	var product = new Product({name: req.param('name'), description: req.param('description'), price: req.param('price')})
 	product.save();
-	res.header('location', '/products/' + product.id)
+	res.header('location', productUri(product))
 	res.send(201)
 })
 
