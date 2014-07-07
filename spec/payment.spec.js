@@ -13,6 +13,7 @@ describe('Order', function() {
 		var product;
 		var user;
 		var order;
+		var order_without_pay;
 
 		beforeEach(function (done) {
 	        mockgoose.reset();
@@ -22,9 +23,13 @@ describe('Order', function() {
 	        order = new Order({product: product._id});
 	        order.save();
 
+	        order_without_pay = new Order({product: product._id});
+	        order_without_pay.save();
+
 			user = new User({name: "kiwi"})
 			user.save();
 			user.placeOrder(order, done);
+			user.placeOrder(order_without_pay, done);
 
 			order.pay({type: 'cash', timestamp: new Date(2014,1,1)})
 		});
@@ -44,5 +49,11 @@ describe('Order', function() {
 					done();
 				});
 		});
+
+		it('not exist pay', function (done) {
+			request(app)
+				.get("/users/" + user.id + "/orders/" + order_without_pay.id + "/payment")
+				.expect(404, done);
+		})
 	});
 })

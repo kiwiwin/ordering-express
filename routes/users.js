@@ -35,7 +35,11 @@ router.get('/:userId/orders/:orderId', function (req, res) {
 router.get('/:userId/orders/:orderId/payment', function (req, res) {
 	return Order.findOne({_id: req.params.orderId, user: req.params.userId})
 				.exec(function (err, order) {
-					return res.send(200, mapPaymentToResponse(order.payment))
+					if (!_.isEmpty(order.payment.toObject())) {
+						return res.send(200, mapPaymentToResponse(order.payment))
+					} else {
+						return res.send(404)
+					}
 				});
 });
 
