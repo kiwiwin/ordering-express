@@ -28,7 +28,7 @@ router.get('/:userId/orders/:orderId', function (req, res) {
 				.populate('product')
 				.populate('user')
 				.exec(function (err, order) {
-					if (err || order == null) {
+					if (err || _.isNull(order)) {
 						return res.send(404)
 					} else {
 						return res.send(200, mapOrderToResponse(order))

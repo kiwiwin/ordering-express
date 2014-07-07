@@ -29,7 +29,7 @@ router.get('/', function (req, res) {
 
 router.get('/:id', function (req, res) {
 	return Product.findById(req.params.id, function (err, product) {
-		if (err || product == null) {
+		if (err || _.isNull(product)) {
 			return res.send(404)
 		}
 		return res.send(200, mapProductToResponse(product))
