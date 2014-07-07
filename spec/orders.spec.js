@@ -19,15 +19,13 @@ describe('Order', function() {
 	        product = new Product({name: 'apple juice', description: 'good', price: 10.12});
 	        product.save();
 
-			user = new User({name: "kiwi"})
-			user.save(function (err) {
-				order = new Order({
-					product: product._id,
-					user: user._id
-				});
+	        order = new Order({
+	        	product: product._id
+	        })
+	        order.save();
 
-				order.save(done);
-			});
+			user = new User({name: "kiwi"})
+			user.placeOrder(order, done)
 		});
 
 		afterEach(function (done) {
