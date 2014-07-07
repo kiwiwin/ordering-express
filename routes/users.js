@@ -28,6 +28,10 @@ router.get('/:userId/orders/:orderId', function (req, res) {
 				});
 });
 
+router.get('/:userId/orders/:orderId/payment', function (req, res) {
+	return res.send(200)
+});
+
 router.get('/:userId/orders', function (req, res) {
 	return Order.find({user: req.params.userId})
 				.populate('product')
