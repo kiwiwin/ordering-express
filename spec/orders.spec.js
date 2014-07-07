@@ -24,8 +24,15 @@ describe('Order', function() {
 	        })
 	        order.save();
 
+	        order2 = new Order({
+	        	product: product._id
+	        })
+	        order2.save();
+
 			user = new User({name: "kiwi"})
+			user.save();
 			user.placeOrder(order, done)
+			user.placeOrder(order2, done)
 		});
 
 		afterEach(function (done) {
@@ -57,10 +64,17 @@ describe('Order', function() {
 				.get("/users/" + user.id + "/orders")
 				.expect(200)
 				.end(function (err, res) {
-					expect(res.body.length).toBe(1);
+					expect(res.body.length).toBe(2);
+					expect(res.body[0].id).toBe(order.id);
+					expect(res.body[0].price).toBe(10.12);
+					expect(res.body[0].uri).toContain("/users/" + user.id + "/orders/" + order.id)
 
 					done();
 				});
 		});
+	});
+
+	describe('Post', function () {
+
 	})
 })
