@@ -10,7 +10,11 @@ router.get('/:userId/orders/:orderId', function (req, res) {
 	return Order.findOne({_id: req.params.orderId, user: req.params.userId})
 				.populate('product')
 				.exec(function (err, order) {
-					return res.send(200, {id: order.id, price: order.product.price})
+					if (err || order == null) {
+						return res.send(404)
+					} else {
+						return res.send(200, {id: order.id, price: order.product.price})
+					}
 				});
 });
 

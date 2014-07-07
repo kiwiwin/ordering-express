@@ -42,6 +42,12 @@ describe('Order', function() {
 
 					done();
 				});
+		});
+
+		it('not exist order', function (done) {
+			request(app)
+				.get("/users/" + user.id + "/orders/not_exist_order_id")
+				.expect(404, done)
 		})
 	})
 })
