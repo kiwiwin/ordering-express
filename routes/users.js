@@ -29,7 +29,11 @@ router.get('/:userId/orders/:orderId', function (req, res) {
 });
 
 router.get('/:userId/orders/:orderId/payment', function (req, res) {
-	return res.send(200)
+	return Order.findOne({_id: req.params.orderId, user: req.params.userId})
+				.exec(function (err, order) {
+					console.log(err)
+					return res.send(200, {type: order.payment.type})
+				});
 });
 
 router.get('/:userId/orders', function (req, res) {

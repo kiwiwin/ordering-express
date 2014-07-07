@@ -37,7 +37,12 @@ describe('Order', function() {
 		it('exist pay', function (done) {
 			request(app)
 				.get("/users/" + user.id + "/orders/" + order.id + "/payment")
-				.expect(200, done);
+				.expect(200)
+				.end(function (err, res) {
+					expect(res.body.type).toBe('cash')
+
+					done();
+				});
 		});
 	});
 })
