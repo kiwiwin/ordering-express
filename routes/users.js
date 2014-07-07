@@ -15,6 +15,10 @@ var mapOrderToResponse = function (order) {
 	return {id: order.id, price: order.product.price, uri: orderUri(order.user, order)}
 }
 
+var mapPaymentToResponse = function (payment) {
+	return payment
+}
+
 router.get('/:userId/orders/:orderId', function (req, res) {
 	return Order.findOne({_id: req.params.orderId, user: req.params.userId})
 				.populate('product')
@@ -31,8 +35,7 @@ router.get('/:userId/orders/:orderId', function (req, res) {
 router.get('/:userId/orders/:orderId/payment', function (req, res) {
 	return Order.findOne({_id: req.params.orderId, user: req.params.userId})
 				.exec(function (err, order) {
-					console.log(err)
-					return res.send(200, {type: order.payment.type})
+					return res.send(200, mapPaymentToResponse(order.payment))
 				});
 });
 
