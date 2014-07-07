@@ -11,6 +11,10 @@ var orderUri = function (userId, orderId) {
 	return "/users/" + userId + "/orders/" + orderId
 }
 
+var paymentUri = function (userId, orderId) {
+	return orderUri(userId, orderId) + "/payment"
+}
+
 var mapOrderToResponse = function (order) {
 	return {id: order.id, price: order.product.price, uri: orderUri(order.user.id, order.id)}
 }
@@ -50,7 +54,7 @@ router.post('/:userId/orders/:orderId/payment', function (req, res) {
 				.exec(function (err, order) {
 					order.pay(payment);
 
-					res.header('location', "/users/" + order.user + "/orders/" + order.id + "/payment")
+					res.header('location', paymentUri(order.user, order.id))
 					return res.send(201);
 				})
 });
