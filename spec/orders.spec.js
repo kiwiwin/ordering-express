@@ -50,6 +50,12 @@ describe('Order', function() {
 			request(app)
 				.get("/users/" + user.id + "/orders/not_exist_order_id")
 				.expect(404, done)
+		});
+
+		it('all orders of a user', function (done) {
+			request(app)
+				.get("/users/" + user.id + "/orders")
+				.expect(200, done)
 		})
 	})
 })

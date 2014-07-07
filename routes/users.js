@@ -27,4 +27,8 @@ router.get('/:userId/orders/:orderId', function (req, res) {
 				});
 });
 
+router.get('/:userId/orders', function (req, res) {
+	res.send(200)
+});
+
 module.exports = router;
