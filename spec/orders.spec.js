@@ -40,6 +40,7 @@ describe('Order', function() {
 				.end(function (err, res) {
 					expect(res.body.id).toBe(order.id);
 					expect(res.body.price).toBe(10.12);
+					expect(res.body.uri).toContain("/users/" + user.id + "/orders/" + order.id)
 
 					done();
 				});
