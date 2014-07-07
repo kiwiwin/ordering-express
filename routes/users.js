@@ -7,12 +7,12 @@ var User = mongoose.model('User');
 var Order = mongoose.model('Order');
 var Product = mongoose.model('Product');
 
-var orderUri = function (user, order) {
-	return "/users/" + user.id + "/orders/" + order.id
+var orderUri = function (userId, orderId) {
+	return "/users/" + userId + "/orders/" + orderId
 }
 
 var mapOrderToResponse = function (order) {
-	return {id: order.id, price: order.product.price, uri: orderUri(order.user, order)}
+	return {id: order.id, price: order.product.price, uri: orderUri(order.user.id, order.id)}
 }
 
 var mapPaymentToResponse = function (payment) {
@@ -73,7 +73,7 @@ router.post('/:userId/orders', function (req, res) {
 	return User.findById(req.params.userId, function (err, user) {
 		user.placeOrder(order)
 
-		res.header('location', orderUri(user, order))
+		res.header('location', orderUri(user.id, order.id))
 		return res.send(201)
 	});
 })
