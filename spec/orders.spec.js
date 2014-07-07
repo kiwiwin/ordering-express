@@ -38,6 +38,7 @@ describe('Order', function() {
 				.get("/users/" + user.id + "/orders/" + order.id)
 				.expect(200)
 				.end(function (err, res) {
+					expect(res.body.id).toBe(order.id);
 					expect(res.body.price).toBe(10.12);
 
 					done();
