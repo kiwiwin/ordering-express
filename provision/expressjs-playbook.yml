@@ -1,0 +1,8 @@
+---
+
+- hosts: expressjs
+  sudo: yes
+  roles:
+    - nodejs
+    - mongodb
+    - server

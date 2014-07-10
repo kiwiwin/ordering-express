@@ -1,0 +1,20 @@
+- name: checkout demo source code
+  git: repo=git://github.com/kiwiwin/ordering-express.git
+       dest=/ordering
+
+- name: install node dependencies
+  npm: path=/ordering
+
+- name: get running app list with forever
+  command: forever list
+  register: running_app
+
+- name: restart server if server is already running
+  command: echo 'restart server'
+  notify: restart server
+  when: "running_app.stdout.find('/ordering/bin/www') != -1"
+
+- name: start server
+  command: echo 'start server'
+  notify: start server
+  when: "running_app.stdout.find('/ordering/bin/www') == -1"

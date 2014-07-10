@@ -1,0 +1,7 @@
+---
+
+- name: restart server
+  command: forever restart /ordering/bin/www
+
+- name: start server
+  command: forever start /ordering/bin/www
